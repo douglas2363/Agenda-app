@@ -1,22 +1,23 @@
 <mat-toolbar>Contatos</mat-toolbar>
+<mat-tab-group>
+    <mat-tab label="Todos"></mat-tab>
+    <mat-tab label="Novo">
+        <mat-card class="haf-width">
+            <mat-card-title>Novo Contato</mat-card-title>
+        <form [formGroup]="formulario" (ngSubmit)="submit()">
+            <mat-form-field class="full-width">
+                <mat-label>Nome</mat-label>
+                <input formControlName="nome" matInput placeholder="digite seu Nome" required />
+            </mat-form-field><br>
+            
+            <mat-form-field class="full-width">
+                <mat-label>Email</mat-label>
+                <input  formControlName="email" matInput placeholder="digite seu Email"  required/>
+            </mat-form-field><br>
+            
+                <button [disabled]="!formulario.valid" mat-button color="primary">Adicionar</button> 
+        </form>
+    </mat-card>
+    </mat-tab>
+  </mat-tab-group>
 
-<form [formGroup]="formulario" (ngSubmit)="submit()">
-    <mat-form-field class="full-width">
-        <mat-label>Nome</mat-label>
-        <input formControlName="nome" matInput placeholder="digite seu Nome" />
-    </mat-form-field><br>
-    
-    
-    <mat-form-field class="full-width">
-        <mat-label>Email</mat-label>
-        <input  formControlName="email" matInput placeholder="digite seu Email" />
-    </mat-form-field><br>
-        
-        
-        
-        <button [disabled]="!formulario.valid" mat-button color="primary">Adicionar</button> 
-       
-
-        
-
-</form>

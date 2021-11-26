@@ -14,6 +14,7 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 export class ContatoComponent implements OnInit {
 
   formulario!: FormGroup;
+  contatos: Contato[] = [];
  
   constructor(
     private contato: ContatoService,
@@ -30,9 +31,10 @@ export class ContatoComponent implements OnInit {
   }
   submit() {
   const formValues = this.formulario.value;
-  const contato: Contato = new Contato();
+  const contato: Contato = new Contato(formValues.nome, formValues.email);
   this.contato.save(contato).subscribe(resposta => {
-    console.log(resposta);
+    this.contatos.push(resposta)
+    console.log(this.contatos);
   })
 
   }
