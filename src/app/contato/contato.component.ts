@@ -15,19 +15,35 @@ export class ContatoComponent implements OnInit {
 
   formulario!: FormGroup;
   contatos: Contato[] = [];
- 
+  colunas = [
+  'id',
+  'nome',
+  'email',
+  'favorito'
+  ];
   constructor(
     private contato: ContatoService,
     private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
+    this.montarFormulario();
+    this.listarContatos();
+
+  }
+
+  montarFormulario(){
     this.formulario = this.fb.group({
       nome: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]]
-
     })
+  }
 
+  listarContatos(){
+    this.contato.list().subscribe(respnse => {
+      this.contatos = respnse;
+      console.log('contatos', this.contatos)
+    })
   }
   submit() {
   const formValues = this.formulario.value;
