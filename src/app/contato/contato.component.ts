@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ContatoService } from './../contato.service';
 import { Contato } from './contato';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms'
+import { Form, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms'
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { MatDialog } from '@angular/material/dialog';
+import { ContatoDetalheComponent } from '../contato-detalhe/contato-detalhe.component';
 
 
 
@@ -16,6 +18,7 @@ export class ContatoComponent implements OnInit {
   formulario!: FormGroup;
   contatos: Contato[] = [];
   colunas = [
+  'foto',
   'id',
   'nome',
   'email',
@@ -23,7 +26,8 @@ export class ContatoComponent implements OnInit {
   ];
   constructor(
     private contato: ContatoService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -61,6 +65,26 @@ export class ContatoComponent implements OnInit {
     console.log(this.contatos);
   })
 
+  }
+
+  uploadFoto(event: any, contato: any){
+    if (event.target.files && event.target.files[0]){
+      const foto = event.target.files[0];
+        const formData: FormData = new FormData();
+        formData.append("foto", foto);
+        this.contato.upload(contato, formData).subscribe(response => this.listarContatos());
+
+    }
+  }
+
+  visualizarContato(contato: Contato){
+    this.dialog.open(
+      ContatoDetalheComponent,{
+        width: '400px',
+        height: '400px',
+        data: contato
+
+      })
   }
 
 }
