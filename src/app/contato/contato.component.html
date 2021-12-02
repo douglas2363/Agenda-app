@@ -10,7 +10,6 @@
         </ng-template>
         <mat-card>
             <table mat-table [dataSource]="contatos" class="full-width">
-
                 <ng-container matColumnDef="foto">
                   <th mat-header-cell *matHeaderCellDef></th>
                   <td mat-cell *matCellDef="let contato">
@@ -24,7 +23,6 @@
                     </div>
                   </td>
               </ng-container>
-
                 <ng-container matColumnDef="id">
                     <th mat-header-cell *matHeaderCellDef> ID </th>
                     <td mat-cell *matCellDef="let contato"> {{contato.id}} </td>
@@ -46,7 +44,6 @@
                       </a>
                     </td>
                 </ng-container>
-
                 <tr mat-header-row *matHeaderRowDef="colunas"></tr>
                 <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
             </table>
@@ -57,7 +54,6 @@
               (page)="paginar($event)"
                 aria-label="Select page">
             </mat-paginator>
-
         </mat-card>
     </mat-tab>
     <mat-tab>
@@ -70,17 +66,32 @@
         <form [formGroup]="formulario" (ngSubmit)="submit()">
             <mat-form-field class="full-width">
                 <mat-label>Nome</mat-label>
-                <input formControlName="nome" matInput placeholder="digite seu Nome" required />
+                <input formControlName="nome" matInput placeholder="digite seu Nome"
+                [ngClass]="{ 'is-invalid': submit && form['nome'].errors }"/>
             </mat-form-field><br>
-
+            <div *ngIf="submit && form['nome'].errors && !form['email'].pristine">
+              <div *ngIf="form['nome'].errors['required']">
+                Campo nome obrigatório!
+                <div *ngIf="form['nome'].errors['nome']">
+                  Formato de email inválido!
+              </div>
+            </div>
+            </div>
             <mat-form-field class="full-width">
                 <mat-label>Email</mat-label>
-                <input  formControlName="email" matInput placeholder="digite seu Email"  required/>
+                <input type="email" formControlName="email" matInput placeholder="digite seu Email"
+                [ngClass]="{ 'is-invalid': submit && form['email'].errors }"/>
             </mat-form-field><br>
-
+            <div *ngIf="submit && form['email'].errors && !form['email'].pristine">
+              <div *ngIf="form['email'].errors['required']">
+                Campo e-mail obrigatório!
+                <div *ngIf="form['email'].errors['email']">
+                  Formato de email inválido!
+              </div>
+            </div>
+            </div>
                 <button [disabled]="!formulario.valid"mat-raised-button color="primary">Adicionar</button>
         </form>
     </mat-card>
     </mat-tab>
   </mat-tab-group>
-

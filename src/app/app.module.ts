@@ -13,6 +13,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatPaginatorModule} from '@angular/material/paginator';
 
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -43,6 +44,7 @@ import { ContatoDetalheComponent } from './contato-detalhe/contato-detalhe.compo
     MatIconModule,
     MatDialogModule,
     MatPaginatorModule,
+    MatSnackBarModule,
     MatCardModule,
 
     BrowserAnimationsModule,

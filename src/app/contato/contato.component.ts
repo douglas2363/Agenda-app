@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ContatoService } from './../contato.service';
 import { Contato } from './contato';
-import { Form, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms'
+import { AbstractControl, Form, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms'
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { MatDialog } from '@angular/material/dialog';
 import { ContatoDetalheComponent } from '../contato-detalhe/contato-detalhe.component';
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
@@ -28,12 +29,13 @@ export class ContatoComponent implements OnInit {
   ];
   totalElementos = 0;
   pagina? = 0;
-  tamanho = 2;
-  pageSizeOptions: number[] = [2];
+  tamanho = 10;
+  pageSizeOptions: number[] = [10];
   constructor(
     private contato: ContatoService,
     private fb: FormBuilder,
     private dialog: MatDialog,
+    private snackbar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -49,7 +51,7 @@ export class ContatoComponent implements OnInit {
     })
   }
 
-  listarContatos(pagina = 0, tamanho = 0){
+  listarContatos(pagina = 0, tamanho = 10){
     this.contato.list(pagina,tamanho).subscribe(respnse => {
       this.contatos = respnse.content;
       this.totalElementos = respnse.totalElements;
@@ -70,9 +72,13 @@ export class ContatoComponent implements OnInit {
   const formValues = this.formulario.value;
   const contato: Contato = new Contato(formValues.nome, formValues.email);
   this.contato.save(contato).subscribe(resposta => {
-    let lista: Contato[] = [...this.contatos, resposta];
-    this.contatos = lista;
+    this.listarContatos();
     console.log(this.contatos);
+    this.snackbar.open('Contato foi salvo com sucesso', 'Sucesso',{
+      duration: 2000
+
+    });
+    this.formulario.reset();
   })
 
   }
@@ -102,6 +108,15 @@ export class ContatoComponent implements OnInit {
     this.listarContatos(this.pagina, this.tamanho);
 
   }
+
+  limpar(){
+
+  }
+
+  get form(): { [key: string]: AbstractControl; }
+{
+    return this.formulario.controls;
+}
 
 }
 
